@@ -45,8 +45,6 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
     bindex (0.8.1)
-    bootsnap (1.12.0)
-      msgpack (~> 1.2)
     builder (3.2.4)
     capybara (3.37.1)
       addressable
@@ -106,7 +104,6 @@ GEM
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     minitest (5.16.2)
-    msgpack (1.5.4)
     multi_xml (0.6.0)
     nio4r (2.5.8)
     nokogiri (1.13.8-x86_64-darwin)
@@ -230,7 +227,6 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
-  bootsnap (>= 1.1.0)
   capybara
   coffee-rails (~> 4.2)
   factory_bot_rails (~> 6.2.0)
