@@ -1,5 +1,4 @@
 GEM
-  remote: https://rubygems.org/
   specs:
     actioncable (5.2.8.1)
       actionpack (= 5.2.8.1)
@@ -228,7 +227,7 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
-  ruby
+  x86_64-darwin-21
 
 DEPENDENCIES
   bootsnap (>= 1.1.0)
@@ -259,4 +258,4 @@ RUBY VERSION
    ruby 2.7.4p191
 
 BUNDLED WITH
-   2.1.4
+   2.2.9
