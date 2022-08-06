@@ -1,7 +1,8 @@
 <h1> Little Esty Shop </h1><br>
 
 <% @merchants.each do |merchant| %>
-  <h3><%= merchant.name %></h3>
+  
+  <h4><%=link_to "#{merchant.name}'s Item Index", "/merchants/#{merchant.id}" %></h4>
 <% end %>
 
 
