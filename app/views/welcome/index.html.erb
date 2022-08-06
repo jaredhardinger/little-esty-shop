@@ -2,7 +2,7 @@
 
 <% @merchants.each do |merchant| %>
   
-  <h4><%=link_to "#{merchant.name}'s Item Index", "/merchants/#{merchant.id}" %></h4>
+  <h4><%=link_to "#{merchant.name}'s Index", "/merchants/#{merchant.id}/dashboard" %></h4>
 <% end %>
 
 
