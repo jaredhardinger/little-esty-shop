@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   end
 
   get '/', to: "welcome#index"
-
+  
+  get '/merchants/:merchant_id', to: 'merchants#index'
+  get '/merchants/:merchant_id', to: 'merchants#show'
   get '/merchants/:merchant_id/invoices', to: 'merchant_invoices#index'
   get '/merchants/:merchant_id/invoices/:id', to: 'merchant_invoices#show'
   post '/merchants/:merchant_id/invoices/:id', to: 'merchant_invoices#update'
