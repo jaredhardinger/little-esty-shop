@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Merchant's Bulk Discounts Index", type: :feature do 
 
-  it "has a link to view all discounts on a merchant's dashboard" do 
+  it "US1: has a link to view all discounts on a merchant's dashboard" do 
     merchant1 = Merchant.create!(name: "Poke Retirement homes")
 	  merchant2 = Merchant.create!(name: "Rendolyn Guiz's poke stops")
 	  merchant3 = Merchant.create!(name: "Dhirley Secasrio's knits and bits")
@@ -38,7 +38,7 @@ RSpec.describe "Merchant's Bulk Discounts Index", type: :feature do
     expect(current_path).to eq("/merchants/#{merchant3.id}/bulk_discounts")
   end
 
-  it  "can list all bulk discounts on the index page including percentage discount and quantity threshold" do 
+  it "US1: can list all bulk discounts on the index page including percentage discount and quantity threshold" do 
     merchant1 = Merchant.create!(name: "Poke Retirement homes")
     discount1 = BulkDiscount.create!(percentage: 20, quantity_threshold: 10, merchant_id: merchant1.id)
     discount2 = BulkDiscount.create!(percentage: 25, quantity_threshold: 15, merchant_id: merchant1.id)
@@ -85,7 +85,7 @@ RSpec.describe "Merchant's Bulk Discounts Index", type: :feature do
     expect(page).to have_content("Quantity Threshold: 20")
   end
 
-  it "each bulk discount listed has a link to its show page" do 
+  it "US1: each bulk discount listed has a link to its show page" do 
     merchant1 = Merchant.create!(name: "Poke Retirement homes")
     discount1 = BulkDiscount.create!(percentage: 20, quantity_threshold: 10, merchant_id: merchant1.id)
     discount2 = BulkDiscount.create!(percentage: 25, quantity_threshold: 15, merchant_id: merchant1.id)
