@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   end
 
   get '/', to: "welcome#index"
-  get '/merchants/:merchant_id', to: 'merchants#show'
   
   get '/merchants/:merchant_id', to: 'merchants#index'
   get '/merchants/:merchant_id', to: 'merchants#show'
@@ -12,6 +11,8 @@ Rails.application.routes.draw do
   get '/merchants/:merchant_id/invoices/:id', to: 'merchant_invoices#show'
   post '/merchants/:merchant_id/invoices/:id', to: 'merchant_invoices#update'
   get '/merchants/:merchant_id/dashboard', to: 'merchants#show'
+  get '/merchants/:merchant_id/bulk_discounts', to:'merchant_bulk_discounts#index'
+  get '/merchants/:merchant_id/bulk_discounts/:bulk_discount_id', to: 'bulk_discounts#show'
   
   get '/admin', to: 'admin#dashboard'
  
