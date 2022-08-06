@@ -1,0 +1,9 @@
+<h1>Bulk Discounts Index page!</h1>
+
+<div id="discounts">
+<% @discounts.each do |discount| %>
+  <p>Percentage: <%= discount.discount_percentage %></p>
+  <p>Quantity: <%= discount.quantity %></p>
+  <%= link_to "#{discount.id}", "/merchants/#{discount.merchant.id}/bulk_discounts/#{discount.id}" %>
+<% end %>
+</div>

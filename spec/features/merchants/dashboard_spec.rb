@@ -110,7 +110,7 @@ RSpec.describe 'Merchant Dashboard Page', type: :feature do
     expect('Pach').to appear_before('Tarker')
     expect('Tarker').to_not appear_before('Gesley')
   end
-  
+
   it "can list a link to merchant items and invoices indexes" do
     merchant1 = Merchant.create!(name: "Poke Retirement homes")
 		merchant2 = Merchant.create!(name: "Rendolyn Guizs poke stops")
@@ -132,7 +132,7 @@ RSpec.describe 'Merchant Dashboard Page', type: :feature do
       expect(page).to have_link("#{merchant2.name}'s Invoice Index")
       expect(page).to_not have_link("#{merchant1.name}'s Item Index")
       expect(page).to_not have_link("#{merchant1.name}'s Invoice Index")
- 
+
     visit "/merchants/#{merchant3.id}/dashboard"
       expect(page).to have_link("#{merchant3.name}'s Item Index")
       expect(page).to have_link("#{merchant3.name}'s Invoice Index")
@@ -166,7 +166,7 @@ RSpec.describe 'Merchant Dashboard Page', type: :feature do
     invoice_item5 = InvoiceItem.create!(quantity: 100, unit_price: 1000, status: 'shipped', item_id: item5.id, invoice_id: invoice5.id)
 
     visit "/merchants/#{merchant1.id}/dashboard"
-    
+
     within("#items-ready-to-ship") do
       expect(page).to have_content("#{item1.name} Date invoice created: Friday, July 01, 2022")
       expect(page).to have_content("#{item2.name} Date invoice created: Saturday, July 02, 2022")

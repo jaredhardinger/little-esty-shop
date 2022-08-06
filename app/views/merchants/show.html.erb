@@ -4,6 +4,7 @@
 <%=@merchant.name %>
 </div>
 
+<h4><%= link_to "All Discount's", "/merchants/#{@merchant.id}/bulk_discounts" %></h4>
 <h4><%=link_to "#{@merchant.name}'s Item Index", "/merchants/#{@merchant.id}/items" %></h4>
 <h4><%=link_to "#{@merchant.name}'s Invoice Index", "/merchants/#{@merchant.id}/invoices" %></h4>
 
@@ -15,7 +16,7 @@
 <div id="items-ready-to-ship">
 <h2>Items ready to ship</h2>
   <% @merchant.items_ready_to_ship.each do |invoice_item| %>
-    <p><%= invoice_item.item.name %> 
+    <p><%= invoice_item.item.name %>
     <br>
     <%= invoice_item.invoice.created_at.strftime("Date invoice created: %A, %B %d, %Y") %>
     </p>
