@@ -57,32 +57,41 @@ RSpec.describe "Merchant's Bulk Discounts Index", type: :feature do
     visit "/merchants/#{merchant1.id}/bulk_discounts"
     
     expect(page).to have_content("Poke Retirement homes")
+    expect(page).to_not have_content("Rendolyn Guiz's poke stops")
     expect(page).to have_content("Percentage Discount: 20%")
     expect(page).to have_content("Quantity Threshold: 10")
     expect(page).to have_content("Percentage Discount: 25%")
     expect(page).to have_content("Quantity Threshold: 15")
     expect(page).to have_content("Percentage Discount: 30%")
     expect(page).to have_content("Quantity Threshold: 20")
+    expect(page).to_not have_content("Percentage Discount: 10%")
+    expect(page).to_not have_content("Quantity Threshold: 25")
 
     visit "/merchants/#{merchant2.id}/bulk_discounts"
     
     expect(page).to have_content("Rendolyn Guiz's poke stops")
+    expect(page).to_not have_content("Poke Retirement homes")
     expect(page).to have_content("Percentage Discount: 10%")
     expect(page).to have_content("Quantity Threshold: 10")
     expect(page).to have_content("Percentage Discount: 15%")
     expect(page).to have_content("Quantity Threshold: 15")
     expect(page).to have_content("Percentage Discount: 20%")
     expect(page).to have_content("Quantity Threshold: 20")
+    expect(page).to_not have_content("Percentage Discount: 30%")
+    expect(page).to_not have_content("Quantity Threshold: 25")
 
     visit "/merchants/#{merchant3.id}/bulk_discounts"
     
     expect(page).to have_content("Dhirley Secasrio's knits and bits")
+    expect(page).to_not have_content("Rendolyn Guiz's poke stops")
     expect(page).to have_content("Percentage Discount: 5%")
     expect(page).to have_content("Quantity Threshold: 10")
     expect(page).to have_content("Percentage Discount: 10%")
     expect(page).to have_content("Quantity Threshold: 15")
     expect(page).to have_content("Percentage Discount: 15%")
     expect(page).to have_content("Quantity Threshold: 20")
+    expect(page).to_not have_content("Percentage Discount: 30%")
+    expect(page).to_not have_content("Quantity Threshold: 25")
   end
 
   it "US1: each bulk discount listed has a link to its show page" do 

@@ -1,4 +1,4 @@
-<h1>Bulk Discounts for <%= @merchant.name %></h1>
+<h1>Bulk Discount Index for <%= @merchant.name %></h1>
 
 <h2><%= @merchant.name %></h2>
   <% @merchant.bulk_discounts.each do |discount| %>
@@ -7,3 +7,5 @@
       <h5><%= link_to 'Bulk Discount Page', "/merchants/#{@merchant.id}/bulk_discounts/#{discount.id}" %></h5>
     </div>
   <% end %>
+
+<h5><%= link_to 'Create New Bulk Discount', "/merchants/#{@merchant.id}/bulk_discounts/new" %></h5>
