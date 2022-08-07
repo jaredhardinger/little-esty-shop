@@ -1,0 +1,9 @@
+<%= form_with url: "/bulk_discounts/#{@discount.id}/update", method: :patch, local: true do |form| %>
+  <%= form.label :percentage %>
+  <%= form.text_field :percentage, value: @discount.percentage %>
+
+  <%= form.label :quantity_threshold %>
+  <%= form.text_field :quantity_threshold, value: @discount.quantity_threshold %>
+
+  <%= form.submit 'Submit' %>
+<% end %>
