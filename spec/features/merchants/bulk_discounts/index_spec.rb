@@ -173,4 +173,63 @@ RSpec.describe "Merchant's Bulk Discounts Index", type: :feature do
       expect(page).to have_link('Bulk Discount Page')
     end
   end
+
+  it "can delete a bulk discount" do 
+    merchant1 = Merchant.create!(name: "Poke Retirement homes")
+    discount1 = BulkDiscount.create!(percentage: 20, quantity_threshold: 10, merchant_id: merchant1.id)
+    discount2 = BulkDiscount.create!(percentage: 25, quantity_threshold: 15, merchant_id: merchant1.id)
+    discount3 = BulkDiscount.create!(percentage: 30, quantity_threshold: 20, merchant_id: merchant1.id)
+
+    merchant2 = Merchant.create!(name: "Rendolyn Guiz's poke stops")
+    discount4 = BulkDiscount.create!(percentage: 10, quantity_threshold: 10, merchant_id: merchant2.id)
+    discount5 = BulkDiscount.create!(percentage: 15, quantity_threshold: 15, merchant_id: merchant2.id)
+    discount6 = BulkDiscount.create!(percentage: 20, quantity_threshold: 20, merchant_id: merchant2.id)
+
+    merchant3 = Merchant.create!(name: "Dhirley Secasrio's knits and bits")
+    discount7 = BulkDiscount.create!(percentage: 5, quantity_threshold: 10, merchant_id: merchant3.id)
+    discount8 = BulkDiscount.create!(percentage: 10, quantity_threshold: 15, merchant_id: merchant3.id)
+    discount9 = BulkDiscount.create!(percentage: 15, quantity_threshold: 20, merchant_id: merchant3.id)
+
+    visit "/merchants/#{merchant1.id}/bulk_discounts"
+
+    expect(page).to have_content("Percentage Discount: 20%")
+    expect(page).to have_content("Quantity Threshold: 10")
+    expect(page).to have_link('Delete Bulk Discount') 
+
+    within "div#discount-#{discount1.id}" do
+      click_on ('Delete Bulk Discount')
+    end
+
+    expect(current_path).to eq("/merchants/#{merchant1.id}/bulk_discounts")
+    expect(page).to_not have_content("Percentage Discount: 20%")
+    expect(page).to_not have_content("Quantity Threshold: 10")
+
+    visit "/merchants/#{merchant2.id}/bulk_discounts"
+
+    expect(page).to have_content("Percentage Discount: 15%")
+    expect(page).to have_content("Quantity Threshold: 15")
+    expect(page).to have_link('Delete Bulk Discount') 
+
+    within "div#discount-#{discount5.id}" do
+      click_on ('Delete Bulk Discount')
+    end
+
+    expect(current_path).to eq("/merchants/#{merchant2.id}/bulk_discounts")
+    expect(page).to_not have_content("Percentage Discount: 15%")
+    expect(page).to_not have_content("Quantity Threshold: 15")
+
+    visit "/merchants/#{merchant3.id}/bulk_discounts"
+
+    expect(page).to have_content("Percentage Discount: 15%")
+    expect(page).to have_content("Quantity Threshold: 20")
+    expect(page).to have_link('Delete Bulk Discount') 
+
+    within "div#discount-#{discount9.id}" do
+      click_on ('Delete Bulk Discount')
+    end
+
+    expect(current_path).to eq("/merchants/#{merchant3.id}/bulk_discounts")
+    expect(page).to_not have_content("Percentage Discount: 15%")
+    expect(page).to_not have_content("Quantity Threshold: 20")  
+  end
 end
