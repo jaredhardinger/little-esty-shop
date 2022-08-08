@@ -15,6 +15,7 @@ class Invoice < ApplicationRecord
     .joins(:item)
     .where(items: { merchant_id: merchant_id })
     .sum('invoice_items.unit_price * invoice_items.quantity')
+    require 'pry'; binding.pry
   end
 
   def self.incomplete_invoices
@@ -24,3 +25,7 @@ class Invoice < ApplicationRecord
     .order(:created_at)
   end
 end
+
+ 
+
+ 

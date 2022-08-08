@@ -27,7 +27,7 @@ RSpec.describe Customer, type: :model do
       invoice5 = Invoice.create!(status: 'completed', customer_id: customer5.id)
       invoice6 = Invoice.create!(status: 'completed', customer_id: customer6.id)
       invoice7 = Invoice.create!(status: 'completed', customer_id: customer7.id)
-# binding.pry
+
       invoice_item1 = InvoiceItem.create!(quantity: 100, unit_price: 1000, status: 'shipped', item_id: item1.id, invoice_id: invoice1.id)
       invoice_item2 = InvoiceItem.create!(quantity: 100, unit_price: 1000, status: 'shipped', item_id: item1.id, invoice_id: invoice2.id)
       invoice_item3 = InvoiceItem.create!(quantity: 100, unit_price: 1000, status: 'shipped', item_id: item1.id, invoice_id: invoice3.id)
