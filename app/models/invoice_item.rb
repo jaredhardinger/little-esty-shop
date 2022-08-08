@@ -10,4 +10,9 @@ class InvoiceItem < ApplicationRecord
     validates_presence_of :quantity
     validates_presence_of :unit_price
     validates_presence_of :status
+
+    def bulk_discount
+        
+        # .where(quantity_threshold: { merchant_id: merchant_id })
+    end
 end
