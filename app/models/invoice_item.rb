@@ -20,4 +20,3 @@ class InvoiceItem < ApplicationRecord
     end
 end
 
-
