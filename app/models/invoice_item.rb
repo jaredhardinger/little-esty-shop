@@ -20,7 +20,4 @@ class InvoiceItem < ApplicationRecord
     end
 end
 
-# maybe this will work
-# def get_max_discount_2
-#     
-#   end
+
