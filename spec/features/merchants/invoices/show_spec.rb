@@ -22,7 +22,7 @@ RSpec.describe 'merchants invoice show page', type: :feature do
 
     visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
 
-    within "div#invoice" do
+    within "#invoice" do
       expect(page).to have_content("Pikachu pics")
       expect(page).to have_content("shipped")
       expect(page).to have_content("Quantity: #{invoice_item1.quantity}")
@@ -39,7 +39,7 @@ RSpec.describe 'merchants invoice show page', type: :feature do
 
     visit "/merchants/#{merchant2.id}/invoices/#{invoice2.id}"
 
-    within "div#invoice" do
+    within "#invoice" do
       expect(page).to have_content("Pokemon stuffy")
       expect(page).to have_content("pending")
       expect(page).to have_content("Quantity: #{invoice_item2.quantity}")
@@ -56,7 +56,7 @@ RSpec.describe 'merchants invoice show page', type: :feature do
 
     visit "/merchants/#{merchant3.id}/invoices/#{invoice3.id}"
 
-    within "div#invoice" do
+    within "#invoice" do
       expect(page).to have_content("Junk")
       expect(page).to have_content("packaged")
       expect(page).to have_content("Quantity: #{invoice_item3.quantity}")
@@ -97,20 +97,20 @@ RSpec.describe 'merchants invoice show page', type: :feature do
 
     visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
 
-    within "div#revenue" do
+    within "#revenue" do
       expect(page).to have_content("Total revenue: 1000")
       expect(page).to_not have_content("2000")
     end
 
     visit "/merchants/#{merchant2.id}/invoices/#{invoice2.id}"
-    within "div#revenue" do
+    within "#revenue" do
       expect(page).to have_content("Total revenue: 4000")
       expect(page).to_not have_content("1000")
     end
 
     visit "/merchants/#{merchant3.id}/invoices/#{invoice3.id}"
 
-    within "div#revenue" do
+    within "#revenue" do
       expect(page).to have_content("Total revenue: 1500")
       expect(page).to_not have_content("1000")
       expect(page).to_not have_content("4000")
@@ -190,14 +190,7 @@ RSpec.describe 'merchants invoice show page', type: :feature do
     expect(page).to have_content("Total revenue with bulk discount: 24000")  
   end
   
-  # save_and_open_page
-  # Merchant Invoice Show Page: Link to applied discounts
-
-  # As a merchant
-  # When I visit my merchant invoice show page
-  # Next to each invoice item I see a link to the show page 
-  # for the bulk discount that was applied (if any)
-  xit "has a link to the show page for the bulk discount if one was applied" do 
+  it "has a link to the show page for the bulk discount if one was applied" do 
     merchant1 = Merchant.create!(name: "Poke Retirement homes")
     item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
     item2 = Item.create!(name: "Pokemon stuffy", description: 'Pikachu stuffed toy', unit_price: 3000, merchant_id: merchant1.id)
@@ -212,9 +205,12 @@ RSpec.describe 'merchants invoice show page', type: :feature do
     visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
 
     expect(page).to have_content("Pikachu pics")
-    expect(page).to have_link('Bulk Discount Show Page')
-
-    expect(page).to have_content("Pokemon stuffy")
-    expect(page).to_not have_link('Bulk Discount Show Page')
+    within "div#discount-#{invoice_item1.id}" do
+      expect(page).to have_link('Bulk Discount Show Page')
+      click_on ('Bulk Discount Show Page')
+      expect(current_path).to eq("/merchants/#{merchant1.id}/bulk_discounts/#{bulk_discount1.id}")
+    end
   end
 end
+
+
