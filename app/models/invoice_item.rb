@@ -16,3 +16,10 @@ class InvoiceItem < ApplicationRecord
         bulk_discounts.order("percentage desc").first
     end
 end
+
+# maybe this will work?
+# def get_max_discount
+# bulk_discounts.where('bulk_discounts.quantity_threshold <= ?', quantity)
+#     .order(percentage: :desc)
+#     .first
+# end
