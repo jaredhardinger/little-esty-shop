@@ -160,7 +160,6 @@ RSpec.describe 'Admin Invoices Item Index' do
         expect(page).to have_content("Total revenue: 25000")
         expect(page).to_not have_content("Total revenue: 1000")
         expect(page).to have_content("Total revenue with bulk discount: 24000") 
-        save_and_open_page
       end
     end
   end

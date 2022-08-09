@@ -10,6 +10,12 @@
     </div>
   <% end %>
 
-<h5><%= link_to 'Create New Bulk Discount', "/merchants/#{@merchant.id}/bulk_discounts/new" %></h5>
+<h5><%= link_to 'Create New Bulk Discount', "/merchants/#{@merchant.id}/bulk_discounts/new" %></h5><br>
+
+<h3>Upcoming Holidays</h3>
+  <% @holidays.holiday_info.shift(3).each do |holiday| %>
+    <p>name: <%= holiday.name %> </p>
+    <p>date: <%= holiday.date %></p>
+  <% end %>
 
 
