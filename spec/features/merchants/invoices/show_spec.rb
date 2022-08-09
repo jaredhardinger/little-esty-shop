@@ -22,7 +22,7 @@ RSpec.describe 'merchants invoice show page', type: :feature do
 
     visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
 
-    within "#invoice" do
+    within "div#invoice" do
       expect(page).to have_content("Pikachu pics")
       expect(page).to have_content("shipped")
       expect(page).to have_content("Quantity: #{invoice_item1.quantity}")
@@ -39,7 +39,7 @@ RSpec.describe 'merchants invoice show page', type: :feature do
 
     visit "/merchants/#{merchant2.id}/invoices/#{invoice2.id}"
 
-    within "#invoice" do
+    within "div#invoice" do
       expect(page).to have_content("Pokemon stuffy")
       expect(page).to have_content("pending")
       expect(page).to have_content("Quantity: #{invoice_item2.quantity}")
@@ -56,7 +56,7 @@ RSpec.describe 'merchants invoice show page', type: :feature do
 
     visit "/merchants/#{merchant3.id}/invoices/#{invoice3.id}"
 
-    within "#invoice" do
+    within "div#invoice" do
       expect(page).to have_content("Junk")
       expect(page).to have_content("packaged")
       expect(page).to have_content("Quantity: #{invoice_item3.quantity}")
@@ -97,20 +97,19 @@ RSpec.describe 'merchants invoice show page', type: :feature do
 
     visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
 
-    within "#revenue" do
+    within "div#revenue" do
       expect(page).to have_content("Total revenue: 1000")
       expect(page).to_not have_content("2000")
     end
 
     visit "/merchants/#{merchant2.id}/invoices/#{invoice2.id}"
-    within "#revenue" do
+    within "div#revenue" do
       expect(page).to have_content("Total revenue: 4000")
       expect(page).to_not have_content("1000")
     end
 
     visit "/merchants/#{merchant3.id}/invoices/#{invoice3.id}"
-
-    within "#revenue" do
+    within "div#revenue" do
       expect(page).to have_content("Total revenue: 1500")
       expect(page).to_not have_content("1000")
       expect(page).to_not have_content("4000")
@@ -170,47 +169,4 @@ RSpec.describe 'merchants invoice show page', type: :feature do
     expect(current_path).to eq("/merchants/#{merchant1.id}/invoices/#{invoice1.id}")
     expect(page).to have_field(:status, with: "Shipped")
   end
-
-  it "can list total revenue from an invoice with and without bulk discounts applied" do 
-    merchant1 = Merchant.create!(name: "Poke Retirement homes")
-    item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
-    item2 = Item.create!(name: "Pokemon stuffy", description: 'Pikachu stuffed toy', unit_price: 3000, merchant_id: merchant1.id)
-    customer1 = Customer.create!(first_name: "Parker", last_name: "Thomson")
-    invoice1 = Invoice.create!(status: "completed", customer_id: customer1.id)
-    bulk_discount1 = BulkDiscount.create!(quantity_threshold: 10, percentage: 10, merchant_id: merchant1.id)
-    
-    invoice_item1 = InvoiceItem.create!(quantity: 10, unit_price: item1.unit_price, status: "shipped", item_id: item1.id, invoice_id: invoice1.id)
-    invoice_item2 = InvoiceItem.create!(quantity: 5, unit_price: item2.unit_price, status: "shipped", item_id: item2.id, invoice_id: invoice1.id)
-    transaction1 = Transaction.create!(credit_card_number: "123456789123456789", result: "success", invoice_id: invoice1.id)
-    
-    visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
-
-    expect(page).to have_content("Total revenue: 25000")
-    expect(page).to_not have_content("Total revenue: 1000")
-    expect(page).to have_content("Total revenue with bulk discount: 24000")  
-  end
-  
-  it "has a link to the show page for the bulk discount if one was applied" do 
-    merchant1 = Merchant.create!(name: "Poke Retirement homes")
-    item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
-    item2 = Item.create!(name: "Pokemon stuffy", description: 'Pikachu stuffed toy', unit_price: 3000, merchant_id: merchant1.id)
-    customer1 = Customer.create!(first_name: "Parker", last_name: "Thomson")
-    invoice1 = Invoice.create!(status: "completed", customer_id: customer1.id)
-    bulk_discount1 = BulkDiscount.create!(quantity_threshold: 10, percentage: 10, merchant_id: merchant1.id)
-    
-    invoice_item1 = InvoiceItem.create!(quantity: 10, unit_price: item1.unit_price, status: "shipped", item_id: item1.id, invoice_id: invoice1.id)
-    invoice_item2 = InvoiceItem.create!(quantity: 5, unit_price: item2.unit_price, status: "shipped", item_id: item2.id, invoice_id: invoice1.id)
-    transaction1 = Transaction.create!(credit_card_number: "123456789123456789", result: "success", invoice_id: invoice1.id)
-
-    visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
-
-    expect(page).to have_content("Pikachu pics")
-    within "div#discount-#{invoice_item1.id}" do
-      expect(page).to have_link('Bulk Discount Show Page')
-      click_on ('Bulk Discount Show Page')
-      expect(current_path).to eq("/merchants/#{merchant1.id}/bulk_discounts/#{bulk_discount1.id}")
-    end
-  end
 end
-
-
