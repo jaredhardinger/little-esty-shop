@@ -6,13 +6,9 @@ class InvoiceItem < ApplicationRecord
 
     has_one :merchant, through: :item
     has_many :transactions, through: :invoice
+    has_many :bulk_discounts, through: :merchant
 
     validates_presence_of :quantity
     validates_presence_of :unit_price
     validates_presence_of :status
-
-    def bulk_discount
-        
-        # .where(quantity_threshold: { merchant_id: merchant_id })
-    end
 end
