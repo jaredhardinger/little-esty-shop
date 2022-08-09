@@ -3,15 +3,15 @@
 <h1 id="myHeader">Little Esty Shop</h1>
 
 <div id="merchantLinks">
-  <span id="merchantName">@merchant.name</span>
     <span class="links">Dashboard</span>
     <span class="links">My Items</span>
     <span class="links">My Invoices</span>
 </div>
 
+<p class=“navbar-text”><strong>Merchant name: <%= @merchant.name %></strong></p>
 <div id="revenue">
-  <h3>Total revenue: <%="#{@invoice.total_revenue}" %></h3>
-  <h3>Total revenue with bulk discount: <%= @invoice.discounted_revenue %></h3>
+  <h4>Total revenue: <%="#{@invoice.total_revenue}" %></h4>
+  <h4>Total revenue with bulk discount: <%=@invoice.discounted_revenue %></h4>
 </div>
 
 <div id="invoice">
