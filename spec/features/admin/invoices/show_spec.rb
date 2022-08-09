@@ -143,14 +143,24 @@ RSpec.describe 'Admin Invoices Item Index' do
         expect(page).to have_content('completed')
       end
 
-# Admin Invoice Show Page: Total Revenue and Discounted Revenue
-
-# As an admin
-# When I visit an admin invoice show page
-# Then I see the total revenue from this invoice (not including discounts)
-# And I see the total discounted revenue from this invoice which includes bulk discounts in the calculation
       it "can list the total revenue with and without bulk discounts for an invoice" do 
-        
+        merchant1 = Merchant.create!(name: "Poke Retirement homes")
+        item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
+        item2 = Item.create!(name: "Pokemon stuffy", description: 'Pikachu stuffed toy', unit_price: 3000, merchant_id: merchant1.id)
+        customer1 = Customer.create!(first_name: "Parker", last_name: "Thomson")
+        invoice1 = Invoice.create!(status: "completed", customer_id: customer1.id)
+        bulk_discount1 = BulkDiscount.create!(quantity_threshold: 10, percentage: 10, merchant_id: merchant1.id)
+
+        invoice_item1 = InvoiceItem.create!(quantity: 10, unit_price: item1.unit_price, status: "shipped", item_id: item1.id, invoice_id: invoice1.id)
+        invoice_item2 = InvoiceItem.create!(quantity: 5, unit_price: item2.unit_price, status: "shipped", item_id: item2.id, invoice_id: invoice1.id)
+        transaction1 = Transaction.create!(credit_card_number: "123456789123456789", result: "success", invoice_id: invoice1.id)
+
+        visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
+
+        expect(page).to have_content("Total revenue: 25000")
+        expect(page).to_not have_content("Total revenue: 1000")
+        expect(page).to have_content("Total revenue with bulk discount: 24000") 
+        save_and_open_page
       end
     end
   end
