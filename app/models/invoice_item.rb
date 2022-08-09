@@ -11,4 +11,8 @@ class InvoiceItem < ApplicationRecord
     validates_presence_of :quantity
     validates_presence_of :unit_price
     validates_presence_of :status
+
+    def get_max_discount
+        bulk_discounts.order("percentage desc").first
+    end
 end
