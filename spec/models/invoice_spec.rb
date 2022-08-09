@@ -24,9 +24,9 @@ RSpec.describe Invoice do
   describe 'instance methods' do
     it "can sum the invoices total revenue" do
       merchant1 = Merchant.create!(name: "Poke Retirement homes")
-      merchant2 = Merchant.create!(name: "Rendolyn Guizs poke stops")
-      merchant3 = Merchant.create!(name: "Dhirley Secasrio's knits and bits")
-
+      merchant2 = Merchant.create!(name: "Rendolyn Guizs poke stops", status: "enabled")
+      merchant3 = Merchant.create!(name: "Dhirley Secasrio's knits and bits", status: "enabled")
+      
       item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
       item2 = Item.create!(name: "Pokemon stuffy", description: 'Pikachu stuffed toy', unit_price: 2000, merchant_id: merchant1.id)
       item3 = Item.create!(name: "Junk", description: 'junk you should want', unit_price: 500, merchant_id: merchant3.id)
@@ -43,6 +43,62 @@ RSpec.describe Invoice do
       expect(invoice1.total_revenue).to eq(5000)
       expect(invoice2.total_revenue).to eq(0)
       expect(invoice3.total_revenue).to eq(1500)
+    end
+
+
+    it  "can get the bulk discount" do 
+      merchant1 = Merchant.create!(name: "Poke Retirement homes")
+
+      item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
+      item2 = Item.create!(name: "Pokemon stuffy", description: 'Pikachu stuffed toy', unit_price: 3000, merchant_id: merchant1.id)
+      item3 = Item.create!(name: "Stickers", description: 'Pikachu sticker', unit_price: 100, merchant_id: merchant1.id)
+      item4 = Item.create!(name: "Button", description: 'Pikachu button', unit_price: 100, merchant_id: merchant1.id)
+
+      customer1 = Customer.create!(first_name: "Parker", last_name: "Thomson")
+
+      invoice1 = Invoice.create!(status: "completed", customer_id: customer1.id)
+      invoice2 = Invoice.create!(status: "completed", customer_id: customer1.id)
+      invoice3 = Invoice.create!(status: "completed", customer_id: customer1.id)
+
+      bulk_discount1 = BulkDiscount.create!(quantity_threshold: 10, percentage: 10, merchant_id: merchant1.id)
+      
+      invoice_item1 = InvoiceItem.create!(quantity: 10, unit_price: item1.unit_price, status: "shipped", item_id: item1.id, invoice_id: invoice1.id)
+      invoice_item2 = InvoiceItem.create!(quantity: 5, unit_price: item2.unit_price, status: "shipped", item_id: item2.id, invoice_id: invoice2.id)
+      invoice_item3 = InvoiceItem.create!(quantity: 12, unit_price: item3.unit_price, status: "shipped", item_id: item3.id, invoice_id: invoice3.id)
+      invoice_item4 = InvoiceItem.create!(quantity: 1, unit_price: item3.unit_price, status: "shipped", item_id: item4.id, invoice_id: invoice3.id)
+      
+      transaction1 = Transaction.create!(credit_card_number: "123456789123456789", result: "success", invoice_id: invoice1.id)
+      transaction2 = Transaction.create!(credit_card_number: "123456789144456789", result: "success", invoice_id: invoice2.id)
+      transaction3 = Transaction.create!(credit_card_number: "123456745123456789", result: "success", invoice_id: invoice3.id)
+
+      expect(invoice1.revenue_with_discount).to eq(1000)
+      expect(invoice2.revenue_with_discount).to eq(0)
+      expect(invoice3.revenue_with_discount).to eq(120)
+    end
+
+    it "can return an invoices total discounted revenue" do
+      merchant1 = Merchant.create!(name: "Poke Retirement homes")
+      item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
+      item2 = Item.create!(name: "Pokemon stuffy", description: 'Pikachu stuffed toy', unit_price: 3000, merchant_id: merchant1.id)
+      item3 = Item.create!(name: "Stickers", description: 'Pikachu sticker', unit_price: 100, merchant_id: merchant1.id)
+      item4 = Item.create!(name: "Button", description: 'Pikachu button', unit_price: 100, merchant_id: merchant1.id)
+      customer1 = Customer.create!(first_name: "Parker", last_name: "Thomson")
+      invoice1 = Invoice.create!(status: "completed", customer_id: customer1.id)
+      invoice2 = Invoice.create!(status: "completed", customer_id: customer1.id)
+      invoice3 = Invoice.create!(status: "completed", customer_id: customer1.id)
+      bulk_discount1 = BulkDiscount.create!(quantity_threshold: 10, percentage: 10, merchant_id: merchant1.id)
+      
+      invoice_item1 = InvoiceItem.create!(quantity: 10, unit_price: item1.unit_price, status: "shipped", item_id: item1.id, invoice_id: invoice1.id)
+      invoice_item2 = InvoiceItem.create!(quantity: 5, unit_price: item2.unit_price, status: "shipped", item_id: item2.id, invoice_id: invoice2.id)
+      invoice_item3 = InvoiceItem.create!(quantity: 12, unit_price: item3.unit_price, status: "shipped", item_id: item3.id, invoice_id: invoice3.id)
+      invoice_item4 = InvoiceItem.create!(quantity: 1, unit_price: item3.unit_price, status: "shipped", item_id: item4.id, invoice_id: invoice3.id)
+      transaction1 = Transaction.create!(credit_card_number: "123456789123456789", result: "success", invoice_id: invoice1.id)
+      transaction2 = Transaction.create!(credit_card_number: "123456789144456789", result: "success", invoice_id: invoice2.id)
+      transaction3 = Transaction.create!(credit_card_number: "123456745123456789", result: "success", invoice_id: invoice3.id)
+
+      expect(invoice1.discounted_revenue).to eq(9000)
+      expect(invoice2.discounted_revenue).to eq(15000)
+      expect(invoice3.discounted_revenue).to eq(1180)
     end
   end
 
