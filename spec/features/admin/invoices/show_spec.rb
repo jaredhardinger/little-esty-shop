@@ -81,8 +81,8 @@ RSpec.describe 'Admin Invoices Item Index' do
               expect(page).to have_content(1)
               expect(page).to have_content(1000)
               expect(page).to have_content("shipped")
-              expect(page).to have_content("Total Revenue: 1000")
-              expect(page).to_not have_content("Total Revenue: 2000")
+              expect(page).to have_content("Total revenue: 1000")
+              expect(page).to_not have_content("Total revenue: 2000")
 
             end
 
@@ -110,8 +110,8 @@ RSpec.describe 'Admin Invoices Item Index' do
               expect(page).to have_content(1)
               expect(page).to have_content(1000)
               expect(page).to have_content("shipped")
-              expect(page).to have_content("Total Revenue: 2000")
-              expect(page).to_not have_content("Total Revenue: 1000")
+              expect(page).to have_content("Total revenue: 2000")
+              expect(page).to_not have_content("Total revenue: 1000")
             end
 
 

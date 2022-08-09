@@ -14,6 +14,7 @@ RSpec.describe Invoice do
     it { should have_many(:transactions) }
     it { should have_many(:items).through(:invoice_items) }
     it { should have_many(:merchants).through(:items)}
+    it { should have_many(:bulk_discounts).through(:merchants)}
   end
 
   describe 'validations' do
@@ -39,9 +40,9 @@ RSpec.describe Invoice do
       invoice_item2 = InvoiceItem.create!(quantity: 2, unit_price: item2.unit_price, status: "pending", item_id: item2.id, invoice_id: invoice1.id)
       invoice_item3 = InvoiceItem.create!(quantity: 3, unit_price: item3.unit_price, status: "packaged", item_id: item3.id, invoice_id: invoice3.id)
 
-      expect(invoice1.total_revenue(merchant1)).to eq(5000)
-      expect(invoice2.total_revenue(merchant2)).to eq(0)
-      expect(invoice3.total_revenue(merchant3)).to eq(1500)
+      expect(invoice1.total_revenue).to eq(5000)
+      expect(invoice2.total_revenue).to eq(0)
+      expect(invoice3.total_revenue).to eq(1500)
     end
   end
 
