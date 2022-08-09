@@ -1,20 +1,18 @@
 <div id="fullpagepadding">
 
 <h1 id="myHeader">Little Esty Shop</h1>
-
 <div id="links">
-  <span id="merchantName">Merchant</span>
     <span class="links">Dashboard</span>
     <span class="links">My Items</span>
     <span class="links">My Invoices</span>
 </div>
 
 <h3 id="invoices">My Invoices</h3>
-  <div id = "merchant">
-  <%= "#{@merchant.name}" %>
+<p class=“navbar-text”><strong>Merchant name: <%= @merchant.name %></strong></p>
   <% @merchant.merchant_invoice_by_item_id.each do |id| %><br>
-  <br>Invoice ID: <%= link_to "#{id}", "/merchants/#{@merchant.id}/invoices/#{id}" %>
-  </div>
+    <div id = "merchant">
+      <br>Invoice ID: <%= link_to "#{id}", "/merchants/#{@merchant.id}/invoices/#{id}" %>
+    </div>
   </div>
   <% end %>
 

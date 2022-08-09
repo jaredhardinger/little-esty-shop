@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Merchant Invoices Index Page', type: :feature do 
 
   describe 'Merchant Invoices with ids and id links' do
-    it "can list all invoices that include at least on of the merchant's items" do
+    it "can list all invoices that include at least one of the merchant's items" do
       merchant1 = Merchant.create!(name: "Poke Retirement homes")
 			merchant2 = Merchant.create!(name: "Rendolyn Guizs poke stops")
 			merchant3 = Merchant.create!(name: "Dhirley Secasrio's knits and bits")
@@ -23,9 +23,9 @@ RSpec.describe 'Merchant Invoices Index Page', type: :feature do
       visit "/merchants/#{merchant1.id}/invoices"
 
       expect(page).to have_content("My Invoices")
+      expect(page).to have_content("#{merchant1.name}")
 
       within "div#merchant" do 
-        expect(page).to have_content("#{merchant1.name}")
         expect(page).to have_content(invoice1.id)
         expect(page).to_not have_content(invoice2.id)
         expect(page).to have_link(invoice1.id)
@@ -34,9 +34,9 @@ RSpec.describe 'Merchant Invoices Index Page', type: :feature do
       end
 
       visit "/merchants/#{merchant2.id}/invoices"
+      expect(page).to have_content("#{merchant2.name}")
 
       within "div#merchant" do 
-        expect(page).to have_content("#{merchant2.name}")
         expect(page).to have_content(invoice2.id)
         expect(page).to_not have_content(invoice1.id)
         expect(page).to have_link(invoice2.id)

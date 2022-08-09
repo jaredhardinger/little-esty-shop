@@ -10,7 +10,7 @@
 
 <p class=“navbar-text”><strong>Merchant name: <%= @merchant.name %></strong></p>
 <div id="revenue">
-  <h4>Total revenue: <%="#{@invoice.total_revenue}" %></h4>
+  <h4>Total revenue: <%= @invoice.total_revenue %></h4>
   <h4>Total revenue with bulk discount: <%=@invoice.discounted_revenue %></h4>
 </div>
 

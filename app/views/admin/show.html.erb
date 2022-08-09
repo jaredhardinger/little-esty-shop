@@ -1,5 +1,6 @@
 <div id="revenue">
-  <h3>Total revenue: <%="#{@invoice.total_revenue}" %></h3>
+  <h4>Total revenue: <%= @invoice.total_revenue %></h4>
+  <h4>Total revenue with bulk discount: <%=@invoice.discounted_revenue %></h4>
 </div>
 <%= form_with url: "/admin/invoices/#{@invoice.id}/update", method: :patch, local: true do |form| %>
 <strong><%= form.label :status %></strong>
