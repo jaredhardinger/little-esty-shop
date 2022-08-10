@@ -3,7 +3,7 @@
 #   "https://github.com/#{repo_name}.git"
 # end
 
-# gem 'httparty'
+gem 'httparty'
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 

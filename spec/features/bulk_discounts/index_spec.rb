@@ -206,4 +206,91 @@ RSpec.describe 'Bulk discounts index page' do
       end
     end
   end
+
+  it "can create a discount for a merchant" do
+    merchant1 = Merchant.create!(name: "Poke Retirement homes", status: "enabled")
+
+    item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
+
+    customer1 = Customer.create!(first_name: "Parker", last_name: "Thomson")
+
+    invoice1 = Invoice.create!(status: "completed", customer_id: customer1.id)
+
+    transaction1 = Transaction.create!(credit_card_number: "123456789123456789", result: "success", invoice_id: invoice1.id)
+
+    invoice_item1 = InvoiceItem.create!(quantity: 1, unit_price: item1.unit_price, status: "shipped", item_id: item1.id, invoice_id: invoice1.id)
+
+    discount1 = BulkDiscount.create!(discount_percentage: 20, quantity:10, merchant_id: merchant1.id)
+
+    visit "/merchants/#{merchant1.id}/bulk_discounts"
+
+    expect(page).to have_link('New Discount')
+    click_link("New Discount")
+
+    expect(current_path).to eq("/merchants/#{merchant1.id}/bulk_discounts/new")
+    fill_in :discount_percentage, with: 25
+    fill_in :quantity, with: 3
+    click_on('New Discount')
+    expect(current_path).to eq("/merchants/#{merchant1.id}/bulk_discounts")
+
+    within "div#discounts" do
+      expect(page).to have_content("Percentage: 25%")
+      expect(page).to have_content("Quantity: 3")
+      expect(page).to have_content("Percentage: #{discount1.discount_percentage}")
+      expect(page).to have_content("Quantity: #{discount1.quantity}")
+    end
+  end
+
+  it "can delete a merchants discount" do
+    merchant1 = Merchant.create!(name: "Poke Retirement homes", status: "enabled")
+    merchant2 = Merchant.create!(name: "Rendolyn Guizs poke stops", status: "enabled")
+    merchant3 = Merchant.create!(name: "Dhirley Secasrio's knits and bits", status: "enabled")
+
+    item1 = Item.create!(name: "Pikachu pics", description: 'Cute pics with pikachu', unit_price: 1000, merchant_id: merchant1.id)
+    item2 = Item.create!(name: "Pokemon stuffy", description: 'Pikachu stuffed toy', unit_price: 2000, merchant_id: merchant2.id)
+    item3 = Item.create!(name: "Junk", description: 'junk you should want', unit_price: 500, merchant_id: merchant3.id)
+
+    customer1 = Customer.create!(first_name: "Parker", last_name: "Thomson")
+
+    invoice1 = Invoice.create!(status: "completed", customer_id: customer1.id)
+    invoice2 = Invoice.create!(status: "cancelled", customer_id: customer1.id)
+    invoice3 = Invoice.create!(status: "in progress", customer_id: customer1.id)
+
+    transaction1 = Transaction.create!(credit_card_number: "123456789123456789", result: "success", invoice_id: invoice1.id)
+
+    invoice_item1 = InvoiceItem.create!(quantity: 1, unit_price: item1.unit_price, status: "shipped", item_id: item1.id, invoice_id: invoice1.id)
+    invoice_item2 = InvoiceItem.create!(quantity: 2, unit_price: item2.unit_price, status: "pending", item_id: item2.id, invoice_id: invoice2.id)
+    invoice_item3 = InvoiceItem.create!(quantity: 3, unit_price: item3.unit_price, status: "packaged", item_id: item3.id, invoice_id: invoice3.id)
+
+    discount1 = BulkDiscount.create!(discount_percentage: 20, quantity:10, merchant_id: merchant1.id)
+    discount2 = BulkDiscount.create!(discount_percentage: 30, quantity:15, merchant_id: merchant1.id)
+    discount3 = BulkDiscount.create!(discount_percentage: 40, quantity:20, merchant_id: merchant2.id)
+    discount4 = BulkDiscount.create!(discount_percentage: 50, quantity:5, merchant_id: merchant3.id)
+
+    visit "/merchants/#{merchant1.id}/bulk_discounts"
+
+    within "div#discounts" do
+      expect(page).to have_content(discount1.id)
+      expect(page).to have_content(discount2.id)
+
+      within "div#discount-#{discount1.id}" do
+        expect(page).to have_link("Delete")
+        click_link("Delete")
+        expect(current_path).to eq("/merchants/#{merchant1.id}/bulk_discounts")
+      end
+    end
+    expect(page).to_not have_content(discount1.id)
+
+    within "div#discounts" do
+      expect(page).to have_content(discount2.id)
+
+      within "div#discount-#{discount2.id}" do
+        expect(page).to have_link("Delete")
+        click_link("Delete")
+        expect(current_path).to eq("/merchants/#{merchant1.id}/bulk_discounts")
+      end
+    end
+    expect(page).to_not have_content(discount1.id)
+    expect(page).to_not have_content(discount2.id)
+  end
 end

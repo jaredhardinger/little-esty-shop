@@ -9,9 +9,6 @@
     <span class="links">My Invoices</span>
 </div>
 
-<div id="revenue">
-  <h3>Total Revenue: <%="#{@invoice.total_revenue(@merchant.id)}" %></h3>
-</div>
 
 <div id="invoice">
   <% @invoice.invoice_items.each do |invoice| %>
@@ -21,14 +18,17 @@
       <p>Quantity: <%= invoice.quantity %></p>
       <p>Price: <%= invoice.unit_price %></p>
       <p>Status: <%= invoice.status %></p>
+      <% if invoice.best_discount %>
+        <p><%= link_to "#{invoice.best_discount.discount_percentage}% Discount", "/merchants/#{@merchant.id}/bulk_discounts/#{invoice.best_discount.id}" %></p>
+      <% end %>
       <%= form_with url: "/merchants/#{@merchant.id}/invoices/#{@invoice.id}", method: :post, local: true do |form| %>
-      <%= form.select :status, options_for_select(InvoiceItem.statuses.map {|k, v| [k.capitalize, k.capitalize] }, selected: "#{invoice.status.capitalize}" ) %> 
-      <%= hidden_field_tag "invoice_item_id", invoice.id %> 
+      <%= form.select :status, options_for_select(InvoiceItem.statuses.map {|k, v| [k.capitalize, k.capitalize] }, selected: "#{invoice.status.capitalize}" ) %>
+      <%= hidden_field_tag "invoice_item_id", invoice.id %>
       <%= form.submit 'Update Item Status' %>
       <% end %>
     <% end %>
-  <% end %>
 </div>
+  <% end %>
 
 <div id="invoices-<%= @invoice.id %>">
   <p>Invoice id: <%= @invoice.id %></p>
@@ -39,4 +39,7 @@
 
 </div>
 
-
+<div id="revenue">
+  <h3>Total Revenue: <%="#{@invoice.total_revenue(@merchant.id)}" %></h3>
+  <h1>Discounted Revenue: <%= "#{@invoice.discounted_revenue(@merchant.id)}" %></h1>
+</div>

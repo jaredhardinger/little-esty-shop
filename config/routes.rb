@@ -25,5 +25,10 @@ Rails.application.routes.draw do
   post '/admin/merchants', to: 'admin_merchants#create'
 
   get '/merchants/:merchant_id/bulk_discounts', to: "bulk_discounts#index"
+  get "/merchants/:merchant_id/bulk_discounts/new", to: "bulk_discounts#new"
   get '/merchants/:merchant_id/bulk_discounts/:discount_id', to: "bulk_discounts#show"
+  get '/merchants/:merchant_id/bulk_discounts/:discount_id/edit', to: 'bulk_discounts#edit'
+  post '/merchants/:merchant_id/bulk_discounts/new', to: 'bulk_discounts#create'
+  delete '/merchants/:merchant_id/bulk_discounts/:discount_id', to: 'bulk_discounts#delete'
+  patch '/merchants/:merchant_id/bulk_discounts/:discount_id', to: 'bulk_discounts#update'
 end

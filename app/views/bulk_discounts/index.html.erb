@@ -1,9 +1,20 @@
 <h1>Bulk Discounts Index page!</h1>
 
+<%= link_to "New Discount", "/merchants/#{@merchant.id}/bulk_discounts/new" %>
+
 <div id="discounts">
 <% @discounts.each do |discount| %>
-  <p>Percentage: <%= discount.discount_percentage %></p>
-  <p>Quantity: <%= discount.quantity %></p>
-  <%= link_to "#{discount.id}", "/merchants/#{discount.merchant.id}/bulk_discounts/#{discount.id}" %>
-<% end %>
+  <div id="discount-<%= discount.id %>">
+    <%= link_to "#{discount.id}", "/merchants/#{discount.merchant.id}/bulk_discounts/#{discount.id}" %>
+    <%= link_to "Delete", "/merchants/#{discount.merchant.id}/bulk_discounts/#{discount.id}", method: :delete %>
+    <p>Percentage: <%= discount.discount_percentage %>%</p>
+    <p>Quantity: <%= discount.quantity %></p>
+  </div>
+    <% end %>
 </div>
+
+<h3>Upcoming Holidays</h3>
+<% @holidays.holiday_information.each do |holiday| %>
+  HoliName: <%= holiday.name %>
+  HoliDate: <%= holiday.date %>
+<% end %>

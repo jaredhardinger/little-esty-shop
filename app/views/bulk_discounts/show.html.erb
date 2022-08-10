@@ -1,5 +1,6 @@
 <h1>Discounts Show page!</h1>
 <div id="discount">
-<h1>Discount: <%= @discount.discount_percentage %>%</h1>
-<h1>Item Quantity: <%= @discount.quantity %></h1>
+  <h1>Discount: <%= @discount.discount_percentage %>%</h1>
+  <h1>Item Quantity: <%= @discount.quantity %></h1>
+  <%= link_to "Edit", "/merchants/#{@discount.merchant_id}/bulk_discounts/#{@discount.id}/edit" %>
 </div>
